@@ -1,0 +1,19 @@
+Section,Parameter,Value
+Overview,Report Classification,CONFIDENTIAL SECURITY RESEARCH
+Overview,Generated Timestamp,2026-11-01 13:41:50 UTC
+Overview,Report Type,MODEL_COMPARISON
+Overview,Format,CSV
+Overview,Trained Model,XGBoost Classifier (SMOTE Balanced)
+Overview,Model Architecture,XGBOOST
+Overview,Problem Type,binary
+Overview,Training Duration,0.12 seconds
+Overview,Imbalance Strategy,SMOTE
+Overview,Feature Count,35
+Overview,Source Dataset,CICIDS2017 Benchmark (Imbalanced)
+Evaluation,accuracy,0.996
+Evaluation,precision_macro,0.9938
+Evaluation,recall_macro,0.9938
+Evaluation,f1_macro,0.9938
+Evaluation,false_positive_rate,0.0025
+Evaluation,false_negative_rate,0.0099
+Evaluation,inference_time_ms,0.004
