@@ -131,8 +131,8 @@ export const LiveMonitoring = () => {
     const matchesProto = filterProto === 'ALL' || flow.protocol === filterProto;
     const matchesSeverity =
       filterSeverity === 'ALL' ||
-      (filterSeverity === 'CRITICAL' && flow.is_malicious && (flow.label === 'DDoS' || flow.label === 'DoS Hulk')) ||
-      (filterSeverity === 'HIGH' && flow.is_malicious && flow.label === 'SSH-Patator') ||
+      (filterSeverity === 'CRITICAL' && flow.is_malicious && (flow.severity === 'CRITICAL' || flow.label?.includes('DDoS'))) ||
+      (filterSeverity === 'HIGH' && flow.is_malicious && (flow.severity === 'HIGH' || flow.label?.includes('DoS') || flow.label?.includes('Patator'))) ||
       (filterSeverity === 'BENIGN' && !flow.is_malicious);
 
     return matchesSearch && matchesProto && matchesSeverity;
