@@ -272,6 +272,68 @@ class MonitoringManager:
                             sim_label = simulated_cat if is_attack_sim else "MALICIOUS"
                             severity = "CRITICAL" if "DDOS" in sim_label.upper() else ("HIGH" if "DOS" in sim_label.upper() else "MEDIUM")
 
+                # Resolve affected target application and threat blast radius
+                p_dst = int(dst_p)
+                lbl_upper = str(sim_label).upper()
+                if is_malicious:
+                    if p_dst == 22 or "PATATOR" in lbl_upper or "SSH" in lbl_upper:
+                        app_name = "OpenSSH Server"
+                        service_category = "Remote Linux Terminal (SSH)"
+                        app_impact = "Target credential stuffing / Brute-force auth attack attempting to compromise root/user shell access."
+                        mitigation = "Ban source IP via fail2ban and enforce SSH public key authentication."
+                    elif p_dst == 80 or "HULK" in lbl_upper or "HTTP" in lbl_upper:
+                        app_name = "HTTP Web Server"
+                        service_category = "Public Web Application (Apache / Nginx)"
+                        app_impact = "Volumetric HTTP GET flood attempting worker thread pool exhaustion and web service crash."
+                        mitigation = "Apply IP rate-limiting drop rules and activate WAF HTTP flood shields."
+                    elif p_dst == 8080 or "DDOS" in lbl_upper:
+                        app_name = "API Gateway"
+                        service_category = "Backend Microservice (Tomcat / Node.js / Spring)"
+                        app_impact = "Distributed volumetric flood targeting API ingress to saturate socket buffers and cause cascading microservice failure."
+                        mitigation = "Trigger upstream traffic scrubbing and enable client API token rate-limiting."
+                    elif p_dst in [445, 139] or "PORTSCAN" in lbl_upper:
+                        app_name = "SMB / Active Directory"
+                        service_category = "Windows File Sharing & RPC Directory"
+                        app_impact = "Adversary reconnaissance scanning for open ports, exposed SMB shares, and lateral movement pivot points."
+                        mitigation = "Block inbound port 445 at firewall and isolate querying host for forensic inspection."
+                    else:
+                        app_name = f"Service Port {p_dst}"
+                        service_category = f"{proto} Application Daemon"
+                        app_impact = "Targeted anomalous flow probing destination port."
+                        mitigation = "Review port security ACL policies."
+                else:
+                    # Normal legitimate BENIGN traffic
+                    if p_dst == 443:
+                        app_name = "HTTPS Secure Gateway"
+                        service_category = "Encrypted Web / REST API Traffic (TLS)"
+                        app_impact = "Standard TLS encrypted client web request. Clean operational status."
+                        mitigation = "None required (verified benign traffic)."
+                    elif p_dst == 80:
+                        app_name = "HTTP Web Server"
+                        service_category = "Public Web Application (Apache / Nginx)"
+                        app_impact = "Standard HTTP web document request. Clean operational status."
+                        mitigation = "None required (verified benign traffic)."
+                    elif p_dst == 8080:
+                        app_name = "API Gateway"
+                        service_category = "Backend Microservice (Tomcat / Node.js)"
+                        app_impact = "Routine API REST payload request. Clean operational status."
+                        mitigation = "None required (verified benign traffic)."
+                    elif p_dst == 53:
+                        app_name = "DNS Resolver"
+                        service_category = "Core Name Resolution (CoreDNS / BIND)"
+                        app_impact = "Standard domain name lookup resolution. Clean operational status."
+                        mitigation = "None required (verified benign traffic)."
+                    elif p_dst == 22:
+                        app_name = "OpenSSH Server"
+                        service_category = "Remote Terminal (SSH)"
+                        app_impact = "Authorized SSH session handshake. Clean operational status."
+                        mitigation = "None required (verified benign traffic)."
+                    else:
+                        app_name = f"Service Port {p_dst}"
+                        service_category = f"{proto} Service Daemon"
+                        app_impact = "Routine client-server communication. Clean operational status."
+                        mitigation = "None required (verified benign traffic)."
+
                 flow_data = {
                     "id": f"flow-{int(time.time()*1000)%100000}",
                     "timestamp": datetime.utcnow().strftime("%H:%M:%S"),
@@ -285,7 +347,11 @@ class MonitoringManager:
                     "severity": severity,
                     "confidence": conf,
                     "packet_count": batch_pkts,
-                    "duration_ms": random.randint(120, 680)
+                    "duration_ms": random.randint(120, 680),
+                    "app_name": app_name,
+                    "service_category": service_category,
+                    "app_impact": app_impact,
+                    "mitigation": mitigation
                 }
 
                 with self.lock:
