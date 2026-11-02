@@ -124,3 +124,4 @@ Follow this step-by-step sequence when demonstrating the project to professors a
 - **Port 8000 or 5173 already in use:** Run `stop.bat` to terminate any previous background sessions, then run `start.bat` again.
 - **Python not recognized:** Re-install Python and ensure you check **"Add Python to PATH"**.
 - **Browser does not open automatically:** Open Chrome or Edge manually and go to **`http://localhost:5173`**.
+
