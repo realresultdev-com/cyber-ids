@@ -8,8 +8,8 @@
 ## 📥 Project Download Link
 
 > **Google Drive Download Link:**  
-> 👉 `[ PASTE YOUR GOOGLE DRIVE LINK HERE ]`  
-> *(Upload `Network_Intrusion_Detection_Project.zip` from your Desktop to Google Drive, set sharing to "Anyone with the link can view", and paste the link above).*
+> 👉 **https://drive.google.com/file/d/1WTM26IUjIDnQBVSks_DLY9SLFLwc1kd8/view?usp=sharing**  
+> *(Click the link above to download `Network_Intrusion_Detection_Project.zip`).*
 
 ---
 

@@ -44,3 +44,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Documentation generator scratch files
+generate_docs.py
+build_perfect_mnc_manual.py
+test_docx_helpers.py
+gdoc_content.txt
+*.docx
+*.html
+
+
