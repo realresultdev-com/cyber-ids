@@ -12,17 +12,32 @@ cd /d "%~dp0"
 
 :: 1. Check Python Installation
 echo [*] Step 1: Checking Python environment...
-set "PYTHON_EXE=python"
+set "PYTHON_EXE="
 python --version >nul 2>&1
-if %errorlevel% neq 0 (
-    if exist "C:\Users\%USERNAME%\Python311\python.exe" (
+if %errorlevel% equ 0 (
+    set "PYTHON_EXE=python"
+) else (
+    py -3 --version >nul 2>&1
+    if !errorlevel! equ 0 (
+        set "PYTHON_EXE=py -3"
+    ) else if exist "C:\Users\%USERNAME%\Python311\python.exe" (
         set "PYTHON_EXE=C:\Users\%USERNAME%\Python311\python.exe"
     ) else if exist "%LOCALAPPDATA%\Programs\Python\Python311\python.exe" (
         set "PYTHON_EXE=%LOCALAPPDATA%\Programs\Python\Python311\python.exe"
+    ) else if exist "%LOCALAPPDATA%\Programs\Python\Python312\python.exe" (
+        set "PYTHON_EXE=%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
+    ) else if exist "%LOCALAPPDATA%\Programs\Python\Python310\python.exe" (
+        set "PYTHON_EXE=%LOCALAPPDATA%\Programs\Python\Python310\python.exe"
+    ) else if exist "C:\Program Files\Python311\python.exe" (
+        set "PYTHON_EXE=C:\Program Files\Python311\python.exe"
+    ) else if exist "C:\Program Files\Python312\python.exe" (
+        set "PYTHON_EXE=C:\Program Files\Python312\python.exe"
+    ) else if exist "C:\Program Files\Python310\python.exe" (
+        set "PYTHON_EXE=C:\Program Files\Python310\python.exe"
     ) else (
-        echo [!] Python is not found on your system PATH or standard folders.
+        echo [!] Python 3.10+ is not detected on your system PATH or standard folders.
         echo [!] Please install Python 3.10 or 3.11 from https://www.python.org/
-        echo [!] Ensure you check 'Add Python to PATH' during installation.
+        echo [!] IMPORTANT: Be sure to check 'Add Python to PATH' during installation!
         pause
         exit /b 1
     )
