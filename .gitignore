@@ -48,8 +48,10 @@ yarn-error.log*
 generate_docs.py
 build_perfect_mnc_manual.py
 test_docx_helpers.py
+create_presentation.py
 gdoc_content.txt
 *.docx
 *.html
+*.pptx
 
 
