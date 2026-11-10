@@ -20,13 +20,13 @@ if exist "backend\venv\Scripts\python.exe" (
 
 set "PYTHON_EXE="
 python -c "import sys" >nul 2>&1
-if %errorlevel% equ 0 (
+if !errorlevel! equ 0 (
     set "PYTHON_EXE=python"
     goto FOUND_PYTHON
 )
 
 py -3 -c "import sys" >nul 2>&1
-if %errorlevel% equ 0 (
+if !errorlevel! equ 0 (
     set "PYTHON_EXE=py -3"
     goto FOUND_PYTHON
 )
@@ -72,7 +72,7 @@ echo [OK] Detected System Python: %PYTHON_EXE%
 if not exist "backend\venv\Scripts\activate.bat" (
     echo [*] Creating fresh Python virtual environment in backend\venv...
     "%PYTHON_EXE%" -m venv backend\venv
-    if %errorlevel% neq 0 (
+    if not exist "backend\venv\Scripts\python.exe" (
         echo [!] Failed to create virtual environment.
         pause
         exit /b 1
@@ -85,7 +85,7 @@ echo [OK] Python virtual environment ready.
 :: 2. Check Node.js and NPM
 echo [*] Step 2: Checking Node.js environment...
 where node >nul 2>&1
-if %errorlevel% neq 0 (
+if !errorlevel! neq 0 (
     echo [!] Node.js is not found on your system PATH.
     echo [!] Please install Node.js from https://nodejs.org/
     pause
